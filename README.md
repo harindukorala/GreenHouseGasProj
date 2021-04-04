@@ -26,7 +26,7 @@ Below diagram illustrates the architecture of the solution
 
 ![green hous gas data collection and visulaization system](https://user-images.githubusercontent.com/4996419/113511100-81823700-95a1-11eb-92b8-7ca495b9e76f.png)
 
-##### Live : http://136.186.108.101/
+### Live : http://136.186.108.101/
 
 ## Explanation for codebase
 

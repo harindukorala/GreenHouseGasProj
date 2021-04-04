@@ -1,0 +1,21 @@
+.title {
+    justify-content: center;
+    position: absolute;
+    left: 50%;
+    -webkit-transform: translateX(-50%);
+    transform: translateX(-50%)
+}
+
+.title p {
+    margin-bottom: 0.2rem;
+    font-size: 1.2rem
+}
+
+.temp {
+    font-size: 2.6rem;
+    margin-bottom: 1rem
+}
+
+.header {
+    color: #dddddd
+}

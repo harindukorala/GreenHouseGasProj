@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+    <title>GHG Project Dashboard</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet"
+        type="text/css">
+    <link href="{{ url_for('static', filename='css/styles.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='css/weather.css') }}" rel="stylesheet">
+    <link href="https://cdn.datatables.net/1.10.20/css/dataTables.bootstrap4.min.css" rel="stylesheet"
+        crossorigin="anonymous" />
+    <link href="{{ url_for('static', filename='css/sb-admin.css') }}" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/js/all.min.js"
+        crossorigin="anonymous"></script>
+    <style>
+        #map{
+            height: 600px;
+            width: 100%;
+        }
+    </style>
+</head>
+
+<body class="sb-nav-fixed">
+    <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
+        <a class="navbar-brand" href="/">GHG Dashboard Project</a>
+        <button class="btn btn-link btn-sm order-1 order-lg-0" id="sidebarToggle" href="#"><i
+                class="fas fa-bars"></i></button>
+    </nav>
+    <div id="layoutSidenav">
+        <div id="layoutSidenav_nav">
+            <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
+                <div class="sb-sidenav-menu">
+                    <div class="nav">
+                        <div class="sb-sidenav-menu-heading">Core</div>
+                        <a class="nav-link" href="index.html">
+                            <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
+                            Dashboard
+                        </a>
+                    </div>
+                </div>
+                <div class="sb-sidenav-footer">
+                    <div class="small">Logged in as:</div>
+                    GHG Admin
+                </div>
+            </nav>
+        </div>
+        <div id="layoutSidenav_content">
+            <main>
+                <div class="container-fluid" style="background-color:black">
+                    <h1 class="mt-4" style="color:white"> GHG Dashboard</h1>
+                    <div class="row">
+                        <div class="col-xl-9">
+                            <div class="card mb-4">
+                                <div class="card-header">
+                                    <i class="fas fa-chart-area mr-1"></i>
+                                    <span> Real time CO2 GAS Emmision Data</span>
+                                    <div class="small text-black">
+                                        <button onclick="showGas()">Show/Hide</button>
+                                    </div>
+                                </div>
+                                <div class="card-body" id="gasLineBody"><canvas id="gasLineChart" width="100%" height="20"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-3">
+                            <div class="card mb-4">
+                                <div class="card-header">
+                                    <i class="fas fa-chart-bar mr-1"></i>
+                                    CO2 level
+                                    <div class="small text-black">
+                                        <button onclick="showCo2Widg()">Show/Hide</button>
+                                    </div>
+                                </div>
+                                <div class="card-body" id="co2WidgBody">
+                                    <canvas id="co2Gauge" style="width:100%;height:100%"></canvas>
+                               </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xl-3">
+                            <div class="card mb-4">
+                                <div class="card-header">
+                                    <i class="fas fa-chart-area mr-1"></i>
+                                    Speed
+                                    <div class="small text-black">
+                                        <button onclick="showSpeedWidg()">Show/Hide</button>
+                                    </div>
+                                </div>
+                                <div class="card-body" id="speeddiv">
+                                    <canvas id="speedGauge" style="width:100%;height:100%"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-3">
+                            <div class="card mb-4">
+                                <div class="card-header">
+                                    <i class="fas fa-chart-area mr-1"></i>
+                                    RPM  
+                                    <div class="small text-black">
+                                        <button onclick="showRPMWidg()">Show/Hide</button>
+                                    </div>
+                                </div>
+                                <div class="card-body" id="rpmWidgBody">
+                                    <canvas id="rpmGaugeCanva" style="width:100%;height:100%"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-3">
+                            <div class="card mb-4">
+                                <div class="card-header">
+                                    <i class="fas fa-chart-area mr-1"></i>
+                                    Acceleration
+                                    <div class="small text-black">
+                                        <button onclick="showAccelWidg()">Show/Hide</button>
+                                    </div>
+                                </div>
+                                <div class="card-body" id="accelWidgBody">
+                                    <canvas id="accelGauge" style="width:100%;height:100%"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-3">
+                            <div class="card mb-4">
+                                <div class="card-header">
+                                    <i class="fas fa-chart-area mr-1"></i>
+                                    Fuel consumption
+                                    <div class="small text-black">
+                                        <button onclick="showFuelWidg()">Show/Hide</button>
+                                    </div>
+                                </div>
+                                <div class="card-body" id="fuelWidgBody">
+                                    <canvas id="fuelGauge" style="width:100%;height:100%"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xl-3">
+                            <div class="card mb-4">
+                                <div class="card-header">
+                                    <i class="fas fa-chart-bar mr-1"></i>
+                                    CO level
+                                    <div class="small text-black">
+                                        <button onclick="showCOWidg()">Show/Hide</button>
+                                    </div>
+                                </div>
+                                <div class="card-body" id="coWidgBody">
+                                    <canvas id="coGauge" style="width:100%;height:100%"></canvas>
+                               </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-3">
+                            <div class="card mb-4">
+                                <div class="card-header">
+                                    <i class="fas fa-chart-bar mr-1"></i>
+                                    O2 level
+                                    <div class="small text-black">
+                                        <button onclick="showO2Widg()">Show/Hide</button>
+                                    </div>
+                                </div>
+                                <div class="card-body" id="o2WidgBody">
+                                    <canvas id="o2Gauge" style="width:100%;height:100%"></canvas>
+                               </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-3">
+                            <div class="card mb-4">
+                                <div class="card-header">
+                                    <i class="fas fa-chart-bar mr-1"></i>
+                                    HC level
+                                    <div class="small text-black">
+                                        <button onclick="showHCWidg()">Show/Hide</button>
+                                    </div>
+                                </div>
+                                <div class="card-body" id="hcWidgBody">
+                                    <canvas id="hcGauge" style="width:100%;height:100%"></canvas>
+                               </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-3">
+                            <div class="card mb-4">
+                                <div class="card-header">
+                                    <i class="fas fa-chart-bar mr-1"></i>
+                                    NCX level
+                                    <div class="small text-black">
+                                        <button onclick="showNCXWidg()">Show/Hide</button>
+                                    </div>
+                                </div>
+                                <div class="card-body" id="ncxWidgBody">
+                                    <canvas id="ncxGauge" style="width:100%;height:100%"></canvas>
+                               </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xl-8">
+                            <div class="card mb-4">
+                                <div class="card-header">
+                                    <i class="fas fa-table mr-1"></i>
+                                    Gas Analyzer results
+                                        <a href="{{url_for('dashboardapi.get_real_gas_data_excel')}}"><button>Download Results</button></a>
+                                </div>
+                                <div class="card-body">
+                                    <div class="table-responsive">
+                                        <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                                            <thead>
+                                                <tr>
+                                                    <th>Date</th>
+                                                    <th>CO %</th>
+                                                    <th>HC ppm</th>
+                                                    <th>CO2 %</th>
+                                                    <th>O2 %</th>
+                                                    <th>NCX ppm</th>
+                                                    <th>AFR</th>
+                                                    <th>lambda</th>
+                                                    <th>CE</th>
+                                                    <th>Temp</th>
+                                                </tr>
+                                            </thead>
+                                            <tfoot>
+                                                <tr>
+                                                    <th>Date</th>
+                                                    <th>CO %</th>
+                                                    <th>HC ppm</th>
+                                                    <th>CO2 %</th>
+                                                    <th>O2 %</th>
+                                                    <th>NCX ppm</th>
+                                                    <th>AFR</th>
+                                                    <th>lambda</th>
+                                                    <th>CE</th>
+                                                    <th>Temp</th>
+                                                </tr>
+                                            </tfoot>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-4">
+                            <div class="card mb-4">
+                                <div class="card-header">
+                                    <i class="fas fa-chart-bar mr-1"></i>
+                                    Live Map
+                                </div>
+                                <div class="card-body">
+                                    <div id="map" >
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xl-3">
+                            <div class="card mb-4">
+                                <div class="card-header">
+                                    <i class="fas fa-chart-bar mr-1"></i>
+                                        GPS Data
+                                        <div class="small text-black">
+                                            <button onclick="showGPSWidget()">Show/Hide</button>
+                                        </div> 
+                                </div>
+                                <div class="card-body" id="gpsWidgBody">
+                                    <canvas id="gpsSpeedGauge" style="width:100%;height:100%"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-3">
+                            <div class="card mb-4">
+                                <div class="card-header">
+                                    <i class="fas fa-chart-bar mr-1"></i>
+                                        Generate Reports
+                                </div>
+                                <div class="card-body">
+                                    <a href="{{url_for('dashboardapi.get_obd_data_excel')}}"><button>Download OBD Data</button></a>
+                                    <p></p>
+                                    <a href="{{url_for('dashboardapi.get_gps_data_excel')}}"><button>Download GPS Data</button></a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-3">
+                            <div class="card mb-4">
+                                <div class="card-header">
+                                    <i class="fas fa-chart-bar mr-1"></i>
+                                    CE level
+                                    <div class="small text-black">
+                                        <button onclick="showCEWidg()">Show/Hide</button>
+                                    </div>
+                                </div>
+                                <div class="card-body" id="ceWidgBody">
+                                    <canvas id="ceGauge" style="width:100%;height:100%"></canvas>
+                               </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-3">
+                            <div class="card mb-4">
+                                <div class="card-header">
+                                    <i class="fas fa-chart-bar mr-1"></i>
+                                    Temperature
+                                    <div class="small text-black">
+                                        <button onclick="showTempWidg()">Show/Hide</button>
+                                    </div>
+                                </div>
+                                <div class="card-body" id="tempWidgBody">
+                                    <canvas id="tempGauge" style="width:100%;height:100%"></canvas>
+                               </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </main>
+            <footer class="py-4 bg-light mt-auto">
+                <div class="container-fluid">
+                    <div class="d-flex align-items-center justify-content-between small">
+                        <div class="text-muted">Copyright &copy; Swinburne University of Technology 2020</div>
+                        <div>
+                            <a href="#">Privacy Policy</a>
+                            &middot;
+                            <a href="#">Terms &amp; Conditions</a>
+                        </div>
+                    </div>
+                </div>
+            </footer>
+        </div>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.bundle.min.js"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.27.0/moment.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js" crossorigin="anonymous"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='js/chartjs-plugin-streaming.min.js') }}"></script>
+    <script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.datatables.net/1.10.20/js/dataTables.bootstrap4.min.js" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+        crossorigin="anonymous"></script>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script src="https://d3js.org/d3.v2.min.js"></script>
+    <script src="//cdn.rawgit.com/Mikhus/canvas-gauges/gh-pages/download/2.1.2/all/gauge.min.js"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='js/clickscript.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='js/gas-line.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='js/digitalgauges.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='js/map.js') }}"></script>
+    <script defer 
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAelWUwiZcIbTwZQG2PaAgSTvSANgZWlK4&callback=initMap">
+    </script>
+	<script type="text/javascript" src="{{ url_for('static', filename='js/gasdatatable.js') }}"></script>
+</body>
+
+</html>

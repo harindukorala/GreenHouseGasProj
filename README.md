@@ -24,7 +24,7 @@ We have developed a Python Flask Web Application and hosted it in a cloud server
 
 Below diagram illustrates the architecture of the solution
 
-
+![green hous gas data collection and visulaization system](https://user-images.githubusercontent.com/4996419/113511100-81823700-95a1-11eb-92b8-7ca495b9e76f.png)
 
 ## Python Flask Web Application 
 

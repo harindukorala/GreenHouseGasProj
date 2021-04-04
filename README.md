@@ -2,7 +2,7 @@
 
 This repository contains the codebase for Green House Gas Python Flask Web Application and python code files used to collect data from IoT sensors.
 
-## Overview the Green House Gas Project 
+## Overview of the Green House Gas Project 
 
 Emissions reporting and sustainability are increasingly important to Australian business. Managing the collection and analysis of Green House Gas emission data from domestic goods and services delivery is a complex and diverse challenge. 
 
@@ -19,8 +19,8 @@ In this solution, we are collecting sensor data from four IoT sensors. They are
 We have connected the above sensors to a Raspbery Pi 4 via serial and bluetooth(OBD sensor) communication links. Python Client application deployed in the Raspbery Pi is responsible for collecting, pre-processing and locally storing sensor data. Furthermore, it transmits sensor data to a database hosted in a cloud server via REST API calls.
 
 We have developed a Python Flask Web Application and hosted it in a cloud server. The APIs in the flask appliction are used to :
--Store sensor data into the database
--Retreive data from database and load into widgets of the dashboard that visualise real time sensor data. 
+- Store sensor data into the database
+- Retreive data from database and load into widgets of the dashboard that visualise real time sensor data. 
 
 Below diagram illustrates the architecture of the solution
 
@@ -32,5 +32,34 @@ Below diagram illustrates the architecture of the solution
 
 - Python 3.X (Tested with 3.7)
 - Flask
+- Pandas
+- Numpy
+- mysql.connector
+
+## Python Client Sensor Data Collection codes
+
+### Required packages. 
+
+- Python 3.X
+- pyserial
+- opencv-python
+- numpy
+- vidgear (https://github.com/abhiTronix/vidgear)
+- requests
+- pandas
+- obd (https://pypi.org/project/obd/)
+
+## Explanation for codebase
+
+1. Client : Data Collection , Data Pre processing and Local data storage and REST API communication 
+  - Script to collect, pre-process, local storage and REST API communication of gas sensor data :  Client/gas-analyser.py
+  - Script to collect, pre-process, local storage and REST API communication of gps sensor data :  Client/gps.py
+  - Script to collect, pre-process, local storage and REST API communication of OBD sensor data :  Client/vehicel-obd.py
+  - Script to collect, pre-process and local storage of dashcam video data : Client/simple-video-client.py
+2. GHGAPP : Flask App
+  - API code : GHGAPP/dashboardapi.py 
+  - HTML view : GHGAPP/templates/dashboard.html
+  - Other static files such as style, javascript : GHGAPP/static
+
 
 

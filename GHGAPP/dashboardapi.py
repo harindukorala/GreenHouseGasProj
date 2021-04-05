@@ -29,9 +29,9 @@ def get_gps_data():
 	except Exception as err:
 		print("Error Message", err.msg)
 	result = cursor.fetchone()
-	jsonString = json.loads(result[0])
+	gps_data_dict = json.loads(result[0])
 	cursor.close()	
-	return jsonString
+	return gps_data_dict
 
 @bp.route('/get_real_live_gas_data', methods=['GET', 'POST'])
 def get_real_live_gas_data():
@@ -44,18 +44,18 @@ def get_real_live_gas_data():
 		print("Error Message", err.msg)
 	result = cursor.fetchone()
 	print(result[0])
-	jsonString = json.loads(result[0])
+	gas_data_dict = json.loads(result[0])
 	cursor.close()
 	return jsonify({
-		"0" : jsonString["CO"],
-		"1" : jsonString["CO2"],
-		"2" : jsonString["O2"],
-		"3" : jsonString["NCX"],
-		"4" : jsonString["CE"],
-		"5" : jsonString["HC"],
-		"6" : jsonString["Temp"],
-		"time_stamp" : jsonString["Timestamp"],
-		"flag" : jsonString["flag"],
+		"0" : gas_data_dict["CO"],
+		"1" : gas_data_dict["CO2"],
+		"2" : gas_data_dict["O2"],
+		"3" : gas_data_dict["NCX"],
+		"4" : gas_data_dict["CE"],
+		"5" : gas_data_dict["HC"],
+		"6" : gas_data_dict["Temp"],
+		"time_stamp" : gas_data_dict["Timestamp"],
+		"flag" : gas_data_dict["flag"],
 		})	
 
 @bp.route('/get_real_live_gas_data_for_table', methods=['GET', 'POST'])
@@ -86,9 +86,9 @@ def get_obd_real_data_gauges():
 		print("Error Message", err.msg)
 	result = cursor.fetchone()
 	print(result[0])
-	jsonString = json.loads(result[0])
+	obd_data_dict = json.loads(result[0])
 	cursor.close()	
-	return jsonString
+	return obd_data_dict
 
 # API for generating excel files for the 
 
